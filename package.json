@@ -1,0 +1,12 @@
+{
+  "name": "baker-onboarding",
+  "version": "1.0.0",
+  "description": "Baker Advice Group - New Client Onboarding Form",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}

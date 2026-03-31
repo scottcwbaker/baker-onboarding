@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Client Form | Baker Advice Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --accent: #BBA384;
+            --accent-light: #d4c4ad;
+            --accent-dark: #9a8468;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #ffffff;
+            --bg-off: #f8f6f3;
+            --border: #e0dbd5;
+            --error: #c0392b;
+            --success: #27ae60;
+            --radius: 12px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--bg-off);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header img {
+            height: 48px;
+        }
+
+        /* ── Progress Bar ── */
+        .progress-container {
+            background: var(--bg);
+            padding: 20px 24px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            max-width: 700px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        .progress-step.active {
+            color: var(--accent-dark);
+            opacity: 1;
+        }
+        .progress-step.completed {
+            color: var(--success);
+            opacity: 0.8;
+        }
+        .progress-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .progress-step.active .progress-dot {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+        .progress-step.completed .progress-dot {
+            border-color: var(--success);
+            background: var(--success);
+            color: #fff;
+        }
+        .progress-line {
+            width: 24px;
+            height: 2px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+        .progress-step.completed + .progress-line {
+            background: var(--success);
+        }
+        .step-label {
+            display: none;
+        }
+        @media (min-width: 640px) {
+            .step-label { display: inline; }
+        }
+
+        /* ── Form Container ── */
+        .form-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 16px 100px;
+        }
+
+        /* ── Steps ── */
+        .step {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .step.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            margin-bottom: 8px;
+        }
+        .step-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .step-header p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ── Form Fields ── */
+        .field {
+            margin-bottom: 20px;
+        }
+        .field:last-child {
+            margin-bottom: 0;
+        }
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .field label .required {
+            color: var(--error);
+            margin-left: 2px;
+        }
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 15px;
+            color: var(--text);
+            background: var(--bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(187, 163, 132, 0.15);
+        }
+        .field input.error,
+        .field select.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+        }
+        .field .error-msg {
+            font-size: 12px;
+            color: var(--error);
+            margin-top: 4px;
+            display: none;
+        }
+        .field input.error + .error-msg,
+        .field select.error + .error-msg {
+            display: block;
+        }
+        .field .hint {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        .field textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 500px) {
+            .field-row { grid-template-columns: 1fr; }
+        }
+
+        /* ── Checkbox toggle for "same as" ── */
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        .checkbox-field input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* ── Toggle Cards (for situation checklist) ── */
+        .toggle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 500px) {
+            .toggle-grid { grid-template-columns: 1fr; }
+        }
+        .toggle-card {
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        .toggle-card:hover {
+            border-color: var(--accent-light);
+            background: var(--bg-off);
+        }
+        .toggle-card.selected {
+            border-color: var(--accent);
+            background: rgba(187, 163, 132, 0.08);
+        }
+        .toggle-card .toggle-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            font-size: 14px;
+            color: transparent;
+        }
+        .toggle-card.selected .toggle-icon {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+        .toggle-card .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ── Entity sections (conditional) ── */
+        .conditional-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .conditional-section.visible {
+            display: block;
+        }
+
+        /* ── Children dynamic list ── */
+        .child-entry {
+            background: var(--bg-off);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 12px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        .child-entry .remove-child {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .child-entry .remove-child:hover {
+            color: var(--error);
+            background: rgba(192,57,43,0.08);
+        }
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            background: none;
+            color: var(--accent-dark);
+            font-family: 'Raleway', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-btn:hover {
+            border-color: var(--accent);
+            background: rgba(187,163,132,0.05);
+        }
+
+        /* ── Navigation buttons ── */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            gap: 12px;
+        }
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--accent-dark);
+        }
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-off);
+        }
+        .btn-submit {
+            background: var(--success);
+            color: #fff;
+            padding: 16px 40px;
+            font-size: 16px;
+        }
+        .btn-submit:hover {
+            background: #219a52;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── Welcome step ── */
+        .welcome-card {
+            text-align: center;
+            padding: 40px 28px;
+        }
+        .welcome-card h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .welcome-card p {
+            color: var(--text-light);
+            font-size: 15px;
+            max-width: 480px;
+            margin: 0 auto 28px;
+        }
+        .prep-list {
+            text-align: left;
+            background: var(--bg-off);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin: 0 auto 20px;
+            max-width: 420px;
+        }
+        .prep-list h3 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-dark);
+            margin-bottom: 12px;
+        }
+        .prep-list ul {
+            list-style: none;
+        }
+        .prep-list li {
+            padding: 8px 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .prep-list li:last-child { border-bottom: none; }
+        .prep-list li::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .time-estimate {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 16px;
+        }
+
+        /* ── Review step ── */
+        .review-section {
+            margin-bottom: 20px;
+        }
+        .review-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-section .edit-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .review-section .edit-link:hover {
+            color: var(--accent-dark);
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 8px 16px;
+            font-size: 14px;
+        }
+        .review-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .review-value {
+            color: var(--text);
+            word-break: break-word;
+        }
+
+        /* ── Agent nomination info box ── */
+        .info-box {
+            background: #fdf8f0;
+            border: 1px solid var(--accent-light);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        .info-box a {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        /* ── Success screen ── */
+        .success-screen {
+            text-align: center;
+            padding: 60px 28px;
+        }
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            color: #fff;
+        }
+        .success-screen h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        .success-screen p {
+            color: var(--text-light);
+            font-size: 15px;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        /* ── Agent nomination radios ── */
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 500px) {
+            .card { padding: 20px; }
+            .welcome-card { padding: 28px 20px; }
+            .review-grid { grid-template-columns: 1fr; }
+            .review-label { font-weight: 600; }
+        }
+
+        /* ── Save indicator ── */
+        .save-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--text);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 200;
+        }
+        .save-indicator.visible {
+            opacity: 1;
+        }
+
+        /* ── Loading overlay ── */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .loading-overlay.visible {
+            display: flex;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <img src="https://bakeradvice.com.au/wp-content/uploads/2022/03/Group-247.png" alt="Baker Advice Group">
+</div>
+
+<!-- Progress -->
+<div class="progress-container">
+    <div class="progress-steps" id="progressSteps">
+        <div class="progress-step active" data-step="0">
+            <div class="progress-dot">1</div>
+            <span class="step-label">Welcome</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="1">
+            <div class="progress-dot">2</div>
+            <span class="step-label">About You</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+            <div class="progress-dot">3</div>
+            <span class="step-label">Your Situation</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+            <div class="progress-dot">4</div>
+            <span class="step-label">Details</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="4">
+            <div class="progress-dot">5</div>
+            <span class="step-label">Bank & Final</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="5">
+            <div class="progress-dot">6</div>
+            <span class="step-label">Review</span>
+        </div>
+    </div>
+</div>
+
+<!-- Form -->
+<div class="form-container">
+
+    <!-- ═══════════════ STEP 0: Welcome ═══════════════ -->
+    <div class="step active" id="step-0">
+        <div class="card welcome-card">
+            <h1>Welcome to Baker Advice Group</h1>
+            <p>Thank you for choosing us. This form collects the information we need to get started — it takes about 10 minutes.</p>
+            <div class="prep-list">
+                <h3>Have these ready</h3>
+                <ul>
+                    <li>Your Tax File Number (TFN)</li>
+                    <li>ABN if you're a sole trader or have a business</li>
+                    <li>Company/Trust details if applicable (ABN, ACN, TFN)</li>
+                    <li>Bank account details for tax refunds</li>
+                    <li>Previous accountant's name (if changing)</li>
+                </ul>
+            </div>
+            <p class="time-estimate">Your progress is saved automatically — you can close and come back anytime.</p>
+        </div>
+        <div class="nav-buttons" style="justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="nextStep()">Get Started</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ STEP 1: About You ═══════════════ -->
+    <div class="step" id="step-1">
+        <div class="step-header">
+            <h2>About You</h2>
+            <p>Your personal details — these are used to set you up in our system.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Personal Details</div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" placeholder="e.g. Jane Smith" required>
+                    <div class="error-msg">Please enter your full name</div>
+                </div>
+                <div class="field">
+                    <label>Date of Birth <span class="required">*</span></label>
+                    <input type="date" id="dob" required>
+                    <div class="error-msg">Please enter your date of birth</div>
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Mobile Number <span class="required">*</span></label>
+                    <input type="tel" id="mobile" placeholder="0400 000 000">
+                    <div class="error-msg">Please enter a valid mobile number</div>
+                </div>
+                <div class="field">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="jane@example.com">
+                    <div class="error-msg">Please enter a valid email address</div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Residential Address <span class="required">*</span></label>
+                <input type="text" id="residentialAddress" placeholder="123 Main Street, Suburb, State, Postcode">
+                <div class="error-msg">Please enter your residential address</div>
+            </div>
+            <label class="checkbox-field">
+                <input type="checkbox" id="sameAsResidential" checked onchange="togglePostal()">
+                Postal address is the same as residential
+            </label>
+            <div class="field" id="postalField" style="display: none;">
+                <label>Postal Address <span class="required">*</span></label>
+                <input type="text" id="postalAddress" placeholder="PO Box or street address">
+                <div class="error-msg">Please enter your postal address</div>
+            </div>
+            <div class="field">
+                <label>Tax File Number (TFN) <span class="required">*</span></label>
+                <input type="text" id="tfn" placeholder="000 000 000" maxlength="11">
+                <div class="error-msg">TFN must be 9 digits</div>
+                <div class="hint">Your TFN is 9 digits. This is kept strictly confidential.</div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ STEP 2: Your Situation ═══════════════ -->
+    <div class="step" id="step-2">
+        <div class="step-header">
+            <h2>Your Situation</h2>
+            <p>Select everything that applies to you. This helps us tailor the rest of the form.</p>
+        </div>
+
+        <div class="card">
+            <div class="toggle-grid">
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="spouse">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Spouse / Partner</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="dependants">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Dependants / Children</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="soleTrader">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">ABN - Sole Trader</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="company">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Company</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="trust">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Trust</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="smsf">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Self Managed Super Fund</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="rentalProperty">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Rental Property</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="shares">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Shares</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="capitalGains">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Capital Gains</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="crypto">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Cryptocurrency</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="foreignIncome">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Foreign Income</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="investments">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Investments</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="incomeProtection">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Income Protection</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="phi">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Private Health Insurance</div>
+                </div>
+                <div class="toggle-card" onclick="toggleSituation(this)" data-key="depreciation">
+                    <div class="toggle-icon">&#10003;</div>
+                    <div class="toggle-label">Depreciation Schedule</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ STEP 3: Conditional Details ═══════════════ -->
+    <div class="step" id="step-3">
+        <div class="step-header">
+            <h2>Additional Details</h2>
+            <p>Based on your situation, we need a few more details.</p>
+        </div>
+
+        <!-- Agent Nomination (shown if company, trust, or smsf) -->
+        <div class="conditional-section" id="section-agentNomination">
+            <div class="card">
+                <div class="card-title">Agent Nomination</div>
+                <div class="info-box">
+                    <strong>Companies, Trusts and SMSFs</strong>
+                    are required by the ATO to nominate a registered agent when engaging or changing agent. Your agent is unable to complete this task for you but can guide you through the process.
+                    <br><br>
+                    <a href="https://www.ato.gov.au/about-ato/commitments-and-reporting/information-and-privacy/identity-security-and-your-tax-and-super/how-to-manage-your-tax-agent-nomination" target="_blank">How to nominate a registered agent - ATO Guide</a>
+                    <br>
+                    Baker Advice Group, Tax Agent Number: <strong>25956302</strong>
+                </div>
+                <div class="field">
+                    <label>Has Baker Advice Group been nominated as your registered agent? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option"><input type="radio" name="agentNomination" value="Yes"> Yes</label>
+                        <label class="radio-option"><input type="radio" name="agentNomination" value="No"> No</label>
+                        <label class="radio-option"><input type="radio" name="agentNomination" value="NA"> N/A</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spouse Section -->
+        <div class="conditional-section" id="section-spouse">
+            <div class="card">
+                <div class="card-title">Spouse / Partner Details</div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" id="spouseFullName" placeholder="e.g. John Smith">
+                    </div>
+                    <div class="field">
+                        <label>Date of Birth</label>
+                        <input type="date" id="spouseDob">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="spouseMobile" placeholder="0400 000 000">
+                    </div>
+                    <div class="field">
+                        <label>Email Address</label>
+                        <input type="email" id="spouseEmail" placeholder="john@example.com">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Residential Address</label>
+                    <input type="text" id="spouseResidentialAddress" placeholder="Leave blank if same as yours">
+                    <div class="hint">Leave blank if same as your residential address</div>
+                </div>
+                <div class="field">
+                    <label>Postal Address</label>
+                    <input type="text" id="spousePostalAddress" placeholder="Leave blank if same as residential">
+                </div>
+                <div class="field">
+                    <label>TFN</label>
+                    <input type="text" id="spouseTfn" placeholder="000 000 000" maxlength="11">
+                    <div class="hint">9 digits</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Children Section -->
+        <div class="conditional-section" id="section-dependants">
+            <div class="card">
+                <div class="card-title">Children / Dependants</div>
+                <div id="childrenList"></div>
+                <button class="add-btn" onclick="addChild()">+ Add a child</button>
+            </div>
+        </div>
+
+        <!-- Company Section -->
+        <div class="conditional-section" id="section-company">
+            <div class="card">
+                <div class="card-title">Company Details</div>
+                <div class="field">
+                    <label>Company Name</label>
+                    <input type="text" id="companyName" placeholder="e.g. Smith Holdings Pty Ltd">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>ABN</label>
+                        <input type="text" id="companyAbn" placeholder="00 000 000 000" maxlength="14">
+                        <div class="hint">11 digits</div>
+                    </div>
+                    <div class="field">
+                        <label>ACN</label>
+                        <input type="text" id="companyAcn" placeholder="000 000 000" maxlength="11">
+                        <div class="hint">9 digits</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>TFN</label>
+                    <input type="text" id="companyTfn" placeholder="000 000 000" maxlength="11">
+                </div>
+                <div class="field">
+                    <label>Director(s)</label>
+                    <input type="text" id="companyDirectors" placeholder="e.g. Jane Smith, John Smith">
+                    <div class="hint">Separate multiple directors with commas</div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Director(s) ID Number</label>
+                        <input type="text" id="companyDirectorId" placeholder="Director ID number(s)">
+                    </div>
+                    <div class="field">
+                        <label>Director(s) Place of Birth</label>
+                        <input type="text" id="companyDirectorPob" placeholder="e.g. Brisbane, QLD">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Secretary</label>
+                    <input type="text" id="companySecretary" placeholder="Company secretary name (if applicable)">
+                </div>
+                <div class="field">
+                    <label>Shareholder(s)</label>
+                    <input type="text" id="companyShareholders" placeholder="e.g. Jane Smith (100%)">
+                    <div class="hint">Include ownership percentages if known</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Section -->
+        <div class="conditional-section" id="section-trust">
+            <div class="card">
+                <div class="card-title">Trust Details</div>
+                <div class="field">
+                    <label>Trust Name</label>
+                    <input type="text" id="trustName" placeholder="e.g. Smith Family Trust">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Trust Type</label>
+                        <select id="trustType">
+                            <option value="">Select...</option>
+                            <option value="Discretionary/Family">Discretionary / Family</option>
+                            <option value="Unit">Unit</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Fixed">Fixed</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>ABN</label>
+                        <input type="text" id="trustAbn" placeholder="00 000 000 000" maxlength="14">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>TFN</label>
+                    <input type="text" id="trustTfn" placeholder="000 000 000" maxlength="11">
+                </div>
+                <div class="field">
+                    <label>Trustee(s)</label>
+                    <input type="text" id="trustTrustees" placeholder="e.g. Smith Holdings Pty Ltd as trustee">
+                    <div class="hint">Individual or corporate trustee name(s)</div>
+                </div>
+                <div class="field">
+                    <label>Beneficiary(s)</label>
+                    <input type="text" id="trustBeneficiaries" placeholder="e.g. Jane Smith, John Smith, and their children">
+                </div>
+            </div>
+        </div>
+
+        <!-- SMSF Section -->
+        <div class="conditional-section" id="section-smsf">
+            <div class="card">
+                <div class="card-title">Self Managed Super Fund Details</div>
+                <div class="field">
+                    <label>SMSF Name</label>
+                    <input type="text" id="smsfName" placeholder="e.g. Smith Superannuation Fund">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>ABN</label>
+                        <input type="text" id="smsfAbn" placeholder="00 000 000 000" maxlength="14">
+                    </div>
+                    <div class="field">
+                        <label>TFN</label>
+                        <input type="text" id="smsfTfn" placeholder="000 000 000" maxlength="11">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Trustee(s) / Director(s)</label>
+                    <input type="text" id="smsfTrustees" placeholder="e.g. Jane Smith, John Smith">
+                </div>
+                <div class="field">
+                    <label>Member(s)</label>
+                    <input type="text" id="smsfMembers" placeholder="e.g. Jane Smith, John Smith">
+                </div>
+            </div>
+        </div>
+
+        <!-- No conditional sections message -->
+        <div id="noDetailsMessage" class="card" style="text-align: center; padding: 40px;">
+            <p style="color: var(--text-light);">No additional details needed based on your situation. Click continue to proceed.</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ STEP 4: Bank & Final ═══════════════ -->
+    <div class="step" id="step-4">
+        <div class="step-header">
+            <h2>Final Details</h2>
+            <p>Bank details for tax refunds and any other information.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Bank Details for Tax Refund</div>
+            <div class="field">
+                <label>Account Name <span class="required">*</span></label>
+                <input type="text" id="bankAccountName" placeholder="e.g. Jane Smith">
+                <div class="error-msg">Please enter the account name</div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>BSB Number <span class="required">*</span></label>
+                    <input type="text" id="bankBsb" placeholder="000-000" maxlength="7">
+                    <div class="error-msg">BSB must be 6 digits</div>
+                </div>
+                <div class="field">
+                    <label>Account Number <span class="required">*</span></label>
+                    <input type="text" id="bankAccountNumber" placeholder="00000000" maxlength="10">
+                    <div class="error-msg">Please enter your account number</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Previous Accountant</div>
+            <div class="field">
+                <label>Previous Accountant / Tax Agent</label>
+                <input type="text" id="previousAccountant" placeholder="Name of your previous accountant (if applicable)">
+                <div class="hint">So we can arrange transfer of records</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Additional Information</div>
+            <div class="field">
+                <label>Anything else we should know?</label>
+                <textarea id="additionalInfo" placeholder="Any other information, special circumstances, or questions you'd like us to know about..."></textarea>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn btn-primary" onclick="nextStep()">Review & Submit</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ STEP 5: Review ═══════════════ -->
+    <div class="step" id="step-5">
+        <div class="step-header">
+            <h2>Review Your Information</h2>
+            <p>Please check everything is correct before submitting.</p>
+        </div>
+
+        <div class="card" id="reviewContent">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn btn-submit" onclick="submitForm()" id="submitBtn">Submit</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ Success Screen ═══════════════ -->
+    <div class="step" id="step-success">
+        <div class="card success-screen">
+            <div class="success-icon">&#10003;</div>
+            <h2>Thank You!</h2>
+            <p>Your information has been submitted successfully. Our team will review your details and be in touch shortly to get started.</p>
+            <p style="margin-top: 20px; font-size: 13px; color: var(--text-light);">If you have any questions in the meantime, reach out to us at <strong>admin@bakeradvice.com.au</strong></p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Save indicator -->
+<div class="save-indicator" id="saveIndicator">Progress saved</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div style="font-weight: 600; color: var(--text);">Submitting your information...</div>
+</div>
+
+<script>
+    // ── State ──
+    let currentStep = 0;
+    const totalSteps = 6;
+    let situation = {};
+    let childCount = 0;
+
+    // ── Google Apps Script URL (set this after deploying) ──
+    const SUBMIT_URL = '__APPS_SCRIPT_URL__';
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProgress();
+        updateProgress();
+        updateConditionalSections();
+    });
+
+    // ── Navigation ──
+    function nextStep() {
+        if (!validateCurrentStep()) return;
+        if (currentStep < totalSteps) {
+            if (currentStep === 4) buildReview();
+            setStep(currentStep + 1);
+            saveProgress();
+        }
+    }
+    function prevStep() {
+        if (currentStep > 0) {
+            setStep(currentStep - 1);
+        }
+    }
+    function goToStep(step) {
+        setStep(step);
+    }
+    function setStep(step) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const target = step === 'success' ? 'step-success' : `step-${step}`;
+        document.getElementById(target).classList.add('active');
+        if (step !== 'success') currentStep = step;
+        updateProgress();
+        if (step === 3) updateConditionalSections();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+        document.querySelectorAll('.progress-step').forEach((el, i) => {
+            el.classList.remove('active', 'completed');
+            if (i === currentStep) el.classList.add('active');
+            else if (i < currentStep) el.classList.add('completed');
+        });
+    }
+
+    // ── Validation ──
+    function validateCurrentStep() {
+        let valid = true;
+        if (currentStep === 1) {
+            valid = validateRequired('fullName') & validateRequired('dob') &
+                    validateRequired('mobile') & validateEmail('email') &
+                    validateRequired('residentialAddress') & validateTfn('tfn');
+            if (!document.getElementById('sameAsResidential').checked) {
+                valid = validateRequired('postalAddress') & valid;
+            }
+        }
+        if (currentStep === 4) {
+            valid = validateRequired('bankAccountName') & validateBsb('bankBsb') &
+                    validateRequired('bankAccountNumber');
+        }
+        return valid;
+    }
+
+    function validateRequired(id) {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.classList.add('error'); return false; }
+        el.classList.remove('error'); return true;
+    }
+    function validateEmail(id) {
+        const el = document.getElementById(id);
+        if (!el.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { el.classList.add('error'); return false; }
+        el.classList.remove('error'); return true;
+    }
+    function validateTfn(id) {
+        const el = document.getElementById(id);
+        const digits = el.value.replace(/\D/g, '');
+        if (digits.length !== 9) { el.classList.add('error'); return false; }
+        el.classList.remove('error'); return true;
+    }
+    function validateBsb(id) {
+        const el = document.getElementById(id);
+        const digits = el.value.replace(/\D/g, '');
+        if (digits.length !== 6) { el.classList.add('error'); return false; }
+        el.classList.remove('error'); return true;
+    }
+
+    // Clear error on input
+    document.addEventListener('input', (e) => {
+        if (e.target.classList.contains('error')) e.target.classList.remove('error');
+    });
+
+    // ── Postal address toggle ──
+    function togglePostal() {
+        const same = document.getElementById('sameAsResidential').checked;
+        document.getElementById('postalField').style.display = same ? 'none' : 'block';
+    }
+
+    // ── Situation toggles ──
+    function toggleSituation(card) {
+        const key = card.dataset.key;
+        card.classList.toggle('selected');
+        situation[key] = card.classList.contains('selected');
+        saveProgress();
+    }
+
+    function updateConditionalSections() {
+        const sections = {
+            'section-spouse': situation.spouse,
+            'section-dependants': situation.dependants,
+            'section-company': situation.company,
+            'section-trust': situation.trust,
+            'section-smsf': situation.smsf,
+            'section-agentNomination': situation.company || situation.trust || situation.smsf,
+        };
+        let anyVisible = false;
+        for (const [id, show] of Object.entries(sections)) {
+            const el = document.getElementById(id);
+            if (show) {
+                el.classList.add('visible');
+                anyVisible = true;
+            } else {
+                el.classList.remove('visible');
+            }
+        }
+        // Add first child if dependants selected and none exist
+        if (situation.dependants && childCount === 0) addChild();
+
+        document.getElementById('noDetailsMessage').style.display = anyVisible ? 'none' : 'block';
+    }
+
+    // ── Dynamic children ──
+    function addChild() {
+        childCount++;
+        const n = childCount;
+        const html = `
+            <div class="child-entry" id="child-${n}">
+                <button class="remove-child" onclick="removeChild(${n})" title="Remove">&times;</button>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Given Name</label>
+                        <input type="text" id="childName-${n}" placeholder="Child's name">
+                    </div>
+                    <div class="field">
+                        <label>Date of Birth</label>
+                        <input type="date" id="childDob-${n}">
+                    </div>
+                </div>
+                <div class="field" style="margin-top: 12px;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="childDep-${n}" checked style="width:18px;height:18px;accent-color:var(--accent);">
+                        Dependant
+                    </label>
+                </div>
+            </div>
+        `;
+        document.getElementById('childrenList').insertAdjacentHTML('beforeend', html);
+    }
+    function removeChild(n) {
+        document.getElementById(`child-${n}`).remove();
+    }
+
+    // ── Build review ──
+    function buildReview() {
+        let html = '';
+
+        // Personal
+        html += reviewSection('Personal Details', 1, {
+            'Full Name': val('fullName'),
+            'Date of Birth': formatDate(val('dob')),
+            'Mobile': val('mobile'),
+            'Email': val('email'),
+            'Residential Address': val('residentialAddress'),
+            'Postal Address': document.getElementById('sameAsResidential').checked ? 'Same as residential' : val('postalAddress'),
+            'TFN': maskTfn(val('tfn')),
+        });
+
+        // Situation
+        const activeItems = Object.entries(situation).filter(([k, v]) => v).map(([k]) => situationLabel(k));
+        html += reviewSection('Your Situation', 2, {
+            'Applies to you': activeItems.length ? activeItems.join(', ') : 'None selected',
+        });
+
+        // Agent nomination
+        if (situation.company || situation.trust || situation.smsf) {
+            const nom = document.querySelector('input[name="agentNomination"]:checked');
+            html += reviewSection('Agent Nomination', 3, {
+                'Nominated?': nom ? nom.value : 'Not answered',
+            });
+        }
+
+        // Spouse
+        if (situation.spouse) {
+            html += reviewSection('Spouse / Partner', 3, {
+                'Full Name': val('spouseFullName'),
+                'Date of Birth': formatDate(val('spouseDob')),
+                'Mobile': val('spouseMobile'),
+                'Email': val('spouseEmail'),
+                'Residential Address': val('spouseResidentialAddress') || 'Same as client',
+                'Postal Address': val('spousePostalAddress') || 'Same as residential',
+                'TFN': maskTfn(val('spouseTfn')),
+            });
+        }
+
+        // Children
+        if (situation.dependants) {
+            const children = document.querySelectorAll('.child-entry');
+            children.forEach((child, i) => {
+                const id = child.id.split('-')[1];
+                html += reviewSection(`Child ${i + 1}`, 3, {
+                    'Name': val(`childName-${id}`),
+                    'Date of Birth': formatDate(val(`childDob-${id}`)),
+                    'Dependant': document.getElementById(`childDep-${id}`)?.checked ? 'Yes' : 'No',
+                });
+            });
+        }
+
+        // Company
+        if (situation.company) {
+            html += reviewSection('Company', 3, {
+                'Company Name': val('companyName'),
+                'ABN': val('companyAbn'),
+                'ACN': val('companyAcn'),
+                'TFN': maskTfn(val('companyTfn')),
+                'Director(s)': val('companyDirectors'),
+                'Director ID': val('companyDirectorId'),
+                'Place of Birth': val('companyDirectorPob'),
+                'Secretary': val('companySecretary'),
+                'Shareholder(s)': val('companyShareholders'),
+            });
+        }
+
+        // Trust
+        if (situation.trust) {
+            html += reviewSection('Trust', 3, {
+                'Trust Name': val('trustName'),
+                'Trust Type': val('trustType'),
+                'ABN': val('trustAbn'),
+                'TFN': maskTfn(val('trustTfn')),
+                'Trustee(s)': val('trustTrustees'),
+                'Beneficiary(s)': val('trustBeneficiaries'),
+            });
+        }
+
+        // SMSF
+        if (situation.smsf) {
+            html += reviewSection('Self Managed Super Fund', 3, {
+                'SMSF Name': val('smsfName'),
+                'ABN': val('smsfAbn'),
+                'TFN': maskTfn(val('smsfTfn')),
+                'Trustee(s) / Director(s)': val('smsfTrustees'),
+                'Member(s)': val('smsfMembers'),
+            });
+        }
+
+        // Bank
+        html += reviewSection('Bank Details', 4, {
+            'Account Name': val('bankAccountName'),
+            'BSB': val('bankBsb'),
+            'Account Number': maskAccount(val('bankAccountNumber')),
+        });
+
+        // Previous accountant & additional
+        const prevAcc = val('previousAccountant');
+        const addInfo = val('additionalInfo');
+        if (prevAcc || addInfo) {
+            html += reviewSection('Other', 4, {
+                ...(prevAcc ? { 'Previous Accountant': prevAcc } : {}),
+                ...(addInfo ? { 'Additional Info': addInfo } : {}),
+            });
+        }
+
+        document.getElementById('reviewContent').innerHTML = html;
+    }
+
+    function reviewSection(title, editStep, fields) {
+        let grid = '';
+        for (const [label, value] of Object.entries(fields)) {
+            grid += `<div class="review-label">${label}</div><div class="review-value">${value || '<em style="color: var(--text-light);">Not provided</em>'}</div>`;
+        }
+        return `
+            <div class="review-section">
+                <h3>${title} <span class="edit-link" onclick="goToStep(${editStep})">Edit</span></h3>
+                <div class="review-grid">${grid}</div>
+            </div>
+        `;
+    }
+
+    // ── Helpers ──
+    function val(id) {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    }
+    function formatDate(d) {
+        if (!d) return '';
+        const parts = d.split('-');
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    function maskTfn(tfn) {
+        if (!tfn) return '';
+        const digits = tfn.replace(/\D/g, '');
+        if (digits.length < 4) return tfn;
+        return '***' + ' ' + '***' + ' ' + digits.slice(-3);
+    }
+    function maskAccount(acc) {
+        if (!acc) return '';
+        if (acc.length <= 3) return acc;
+        return '***' + acc.slice(-3);
+    }
+    function situationLabel(key) {
+        const labels = {
+            spouse: 'Spouse / Partner', dependants: 'Dependants / Children', soleTrader: 'ABN - Sole Trader',
+            company: 'Company', trust: 'Trust', smsf: 'SMSF', rentalProperty: 'Rental Property',
+            shares: 'Shares', capitalGains: 'Capital Gains', crypto: 'Cryptocurrency',
+            foreignIncome: 'Foreign Income', investments: 'Investments', incomeProtection: 'Income Protection',
+            phi: 'Private Health Insurance', depreciation: 'Depreciation Schedule',
+        };
+        return labels[key] || key;
+    }
+
+    // ── Save / Load progress (localStorage) ──
+    function saveProgress() {
+        const data = {
+            currentStep,
+            situation,
+            fields: {},
+        };
+        // Save all input values
+        document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select').forEach(el => {
+            if (el.id) data.fields[el.id] = el.value;
+        });
+        // Save radio buttons
+        document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+            data.fields[`radio_${el.name}`] = el.value;
+        });
+        // Save checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+            if (el.id) data.fields[`check_${el.id}`] = el.checked;
+        });
+        localStorage.setItem('baker_onboarding', JSON.stringify(data));
+        showSaveIndicator();
+    }
+    function loadProgress() {
+        const raw = localStorage.getItem('baker_onboarding');
+        if (!raw) return;
+        try {
+            const data = JSON.parse(raw);
+            situation = data.situation || {};
+            // Restore toggle cards
+            document.querySelectorAll('.toggle-card').forEach(card => {
+                if (situation[card.dataset.key]) card.classList.add('selected');
+            });
+            // Restore fields
+            if (data.fields) {
+                for (const [id, value] of Object.entries(data.fields)) {
+                    if (id.startsWith('radio_')) {
+                        const name = id.replace('radio_', '');
+                        const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+                        if (radio) radio.checked = true;
+                    } else if (id.startsWith('check_')) {
+                        const elId = id.replace('check_', '');
+                        const el = document.getElementById(elId);
+                        if (el) el.checked = value;
+                    } else {
+                        const el = document.getElementById(id);
+                        if (el) el.value = value;
+                    }
+                }
+            }
+            // Restore postal toggle
+            togglePostal();
+            // Restore children (look for childName fields)
+            if (data.fields) {
+                const childIds = Object.keys(data.fields).filter(k => k.startsWith('childName-')).map(k => parseInt(k.split('-')[1]));
+                childIds.forEach(id => {
+                    childCount = Math.max(childCount, id);
+                    if (!document.getElementById(`child-${id}`)) {
+                        // Recreate child entry
+                        addChildWithId(id);
+                    }
+                });
+                // Restore child values after creating elements
+                for (const [id, value] of Object.entries(data.fields)) {
+                    if (id.startsWith('child')) {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            if (el.type === 'checkbox') el.checked = value;
+                            else el.value = value;
+                        }
+                    }
+                }
+            }
+            // Go to saved step
+            if (data.currentStep > 0) setStep(data.currentStep);
+        } catch (e) { /* ignore corrupt data */ }
+    }
+    function addChildWithId(n) {
+        const html = `
+            <div class="child-entry" id="child-${n}">
+                <button class="remove-child" onclick="removeChild(${n})" title="Remove">&times;</button>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Given Name</label>
+                        <input type="text" id="childName-${n}" placeholder="Child's name">
+                    </div>
+                    <div class="field">
+                        <label>Date of Birth</label>
+                        <input type="date" id="childDob-${n}">
+                    </div>
+                </div>
+                <div class="field" style="margin-top: 12px;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="childDep-${n}" checked style="width:18px;height:18px;accent-color:var(--accent);">
+                        Dependant
+                    </label>
+                </div>
+            </div>
+        `;
+        document.getElementById('childrenList').insertAdjacentHTML('beforeend', html);
+    }
+    function showSaveIndicator() {
+        const el = document.getElementById('saveIndicator');
+        el.classList.add('visible');
+        setTimeout(() => el.classList.remove('visible'), 1500);
+    }
+
+    // Auto-save on input
+    document.addEventListener('change', saveProgress);
+    document.addEventListener('input', debounce(saveProgress, 1000));
+
+    function debounce(fn, ms) {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+    }
+
+    // ── Submit ──
+    async function submitForm() {
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        document.getElementById('loadingOverlay').classList.add('visible');
+
+        const formData = collectAllData();
+
+        try {
+            const response = await fetch(SUBMIT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+                mode: 'no-cors',
+            });
+            // Clear saved progress on success
+            localStorage.removeItem('baker_onboarding');
+            document.getElementById('loadingOverlay').classList.remove('visible');
+            document.querySelector('.progress-container').style.display = 'none';
+            setStep('success');
+        } catch (error) {
+            document.getElementById('loadingOverlay').classList.remove('visible');
+            btn.disabled = false;
+            alert('Something went wrong submitting the form. Please try again or contact us directly.');
+        }
+    }
+
+    function collectAllData() {
+        const data = {
+            submittedAt: new Date().toISOString(),
+            // Personal
+            fullName: val('fullName'),
+            dob: formatDate(val('dob')),
+            mobile: val('mobile'),
+            email: val('email'),
+            residentialAddress: val('residentialAddress'),
+            postalAddress: document.getElementById('sameAsResidential').checked ? val('residentialAddress') : val('postalAddress'),
+            tfn: val('tfn'),
+            // Situation flags
+            ...Object.fromEntries(Object.entries(situation).map(([k, v]) => [`situation_${k}`, v ? 'Yes' : 'No'])),
+            // Agent nomination
+            agentNomination: document.querySelector('input[name="agentNomination"]:checked')?.value || '',
+            // Spouse
+            spouseFullName: val('spouseFullName'),
+            spouseDob: formatDate(val('spouseDob')),
+            spouseMobile: val('spouseMobile'),
+            spouseEmail: val('spouseEmail'),
+            spouseResidentialAddress: val('spouseResidentialAddress'),
+            spousePostalAddress: val('spousePostalAddress'),
+            spouseTfn: val('spouseTfn'),
+            // Company
+            companyName: val('companyName'),
+            companyAbn: val('companyAbn'),
+            companyAcn: val('companyAcn'),
+            companyTfn: val('companyTfn'),
+            companyDirectors: val('companyDirectors'),
+            companyDirectorId: val('companyDirectorId'),
+            companyDirectorPob: val('companyDirectorPob'),
+            companySecretary: val('companySecretary'),
+            companyShareholders: val('companyShareholders'),
+            // Trust
+            trustName: val('trustName'),
+            trustType: val('trustType'),
+            trustAbn: val('trustAbn'),
+            trustTfn: val('trustTfn'),
+            trustTrustees: val('trustTrustees'),
+            trustBeneficiaries: val('trustBeneficiaries'),
+            // SMSF
+            smsfName: val('smsfName'),
+            smsfAbn: val('smsfAbn'),
+            smsfTfn: val('smsfTfn'),
+            smsfTrustees: val('smsfTrustees'),
+            smsfMembers: val('smsfMembers'),
+            // Children
+            children: [],
+            // Bank
+            bankAccountName: val('bankAccountName'),
+            bankBsb: val('bankBsb'),
+            bankAccountNumber: val('bankAccountNumber'),
+            // Other
+            previousAccountant: val('previousAccountant'),
+            additionalInfo: val('additionalInfo'),
+        };
+
+        // Collect children
+        document.querySelectorAll('.child-entry').forEach(entry => {
+            const id = entry.id.split('-')[1];
+            data.children.push({
+                name: val(`childName-${id}`),
+                dob: formatDate(val(`childDob-${id}`)),
+                dependant: document.getElementById(`childDep-${id}`)?.checked ? 'Yes' : 'No',
+            });
+        });
+
+        return data;
+    }
+</script>
+
+</body>
+</html>
